@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
 
 function connect() {
-  // mongoose.set("useNewUrlParser", true);
-  // mongoose.set("useUniFiedTopology", true);
+  // monmongoose.set("useUniFiedTopology", true);goose.set("useNewUrlParser", true);
 
   mongoose.connect(
-    "mongodb://localhost:27017/?readPreference=primary&tls=false"
+    "mongodb://localhost:27017/projeto-crud?"
   );
 
   const db = mongoose.connection;
@@ -18,5 +17,5 @@ function connect() {
 }
 
 module.exports = {
-  connect
+  connect,
 };
