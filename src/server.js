@@ -1,26 +1,32 @@
-const express = require("express");
-const path = require("path");
+const express = require('express')
+const path = require('path')
 
-const data = require("./database");
-const routes = require("./routes/index");
+const db = require('./database')
+const routes = require('./routes')
 
-const app = express();
+const app = express()
 
-data.connect();
+// conexão com o banco de dados
+db.connect()
 
+// definindo o template engine
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
+// definindo os arquivos públicos
+app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(express.static(path.join(__dirname, "public")));
+// habilita server para receber dados via post (formulário)
+app.use(express.urlencoded({ extended: true }))
 
-app.use(express.urlencoded({ extended: true }));
+// definindo as rotas
+app.use('/', routes)
 
-routes.use("/", routes);
+// 404 error (not found)
+app.use((req, res) => { // middleware
+  res.send('Página não encontrada!')
+})
 
-app.use((request, response) => {
-  response.send("Página não encontrada!");
-});
-
-const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`Serve is listening on port ${port}`));
+// executando o servidor
+const port = process.env.PORT || 8080
+app.listen(port, () => console.log(`Server is listening on port ${port}`))
